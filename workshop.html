@@ -1,0 +1,468 @@
+<title>Produktmodenhet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+/* ── Tokens ─────────────────────────── */
+:root {
+  --bg: #ffffff;
+  --surface: #f3f3f9;
+  --fg: #16162a;
+  --fg-muted: #6565a0;
+  --border: #dcdcf0;
+  --max-w: 700px;
+  --ff-display: 'Inter', system-ui, sans-serif;
+  --ff-body: 'Inter', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d0d1a; --surface: #17172c; --fg: #eeeef8;
+    --fg-muted: #8080b8; --border: #28284a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d0d1a; --surface: #17172c; --fg: #eeeef8;
+  --fg-muted: #8080b8; --border: #28284a; color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--ff-body); font-size: 15px;
+  padding-inline: 16px; padding-block: 0;
+}
+
+/* ── Top bar ────────────────────────── */
+.top-bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 100;
+  background: var(--bg); border-bottom: 1.5px solid var(--border);
+  margin-inline: -16px; padding-inline: 16px; padding-block: 13px;
+}
+.top-bar-inner {
+  max-width: var(--max-w); margin-inline: auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.top-title {
+  font-family: var(--ff-display); font-size: 18px; font-weight: 800;
+  margin: 0; color: var(--fg);
+}
+.top-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.progress-text { font-size: 12px; font-weight: 600; color: var(--fg-muted); white-space: nowrap; }
+.reset-btn {
+  padding: 9px 14px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: transparent; color: var(--fg-muted);
+  font-family: var(--ff-body); font-size: 13px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  transition: border-color .15s, color .15s;
+}
+.reset-btn:hover { border-color: #e05; color: #e05; }
+.pdf-btn {
+  padding: 9px 16px; border-radius: 10px; border: none;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: #fff; font-family: var(--ff-body); font-size: 13px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  transition: opacity .15s, transform .12s;
+}
+.pdf-btn:hover { opacity: .88; transform: translateY(-1px); }
+.pdf-btn:active { transform: none; }
+.pdf-btn:disabled { opacity: .45; cursor: default; transform: none; }
+
+/* ── Content ────────────────────────── */
+.content {
+  max-width: var(--max-w); margin-inline: auto;
+  padding-block: 28px 80px; display: flex; flex-direction: column; gap: 28px;
+}
+
+/* ── Section ────────────────────────── */
+.section { border-radius: 0; overflow: hidden; box-shadow: 0 3px 22px rgba(0,0,0,.08); }
+.section-header { padding: 26px 28px 22px; color: #fff; }
+.section-eye {
+  font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase;
+  opacity: .72; margin-bottom: 7px;
+}
+.section-title {
+  font-family: var(--ff-display); font-size: clamp(20px, 3.8vw, 26px);
+  font-weight: 900; margin: 0; text-wrap: balance; line-height: 1.22;
+}
+.section-body { background: var(--bg); }
+
+/* ── Question ───────────────────────── */
+.q-item { padding: 20px 24px; border-top: 1px solid var(--border); }
+.q-item:first-child { border-top: none; }
+.q-eye {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--fg-muted); margin-bottom: 5px;
+}
+.q-statement {
+  font-size: 15px; line-height: 1.65; font-weight: 500;
+  margin: 0 0 14px; color: var(--fg);
+}
+.scale-labels {
+  display: flex; justify-content: space-between;
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--fg-muted); margin-bottom: 7px;
+}
+.scale-boxes { display: flex; gap: 6px; }
+.sbox {
+  flex: 1; min-width: 0; aspect-ratio: 1;
+  border-radius: 0; border: 2px solid var(--border);
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums;
+  cursor: pointer; color: var(--fg-muted);
+  transition: border-color .12s, background .12s, color .12s, transform .1s, box-shadow .1s;
+  user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.sbox:hover:not(.on) { border-color: #aaa; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,.1); }
+.sbox.on { border-color: transparent; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+
+</style>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <h1 class="top-title">Produktmodenhet</h1>
+    <div class="top-right">
+      <span class="progress-text" id="progress-text"></span>
+      <button class="reset-btn" id="reset-btn">↺ Nullstill</button>
+      <button class="pdf-btn" id="pdf-btn">⬇ Last ned PDF</button>
+    </div>
+  </div>
+</div>
+
+<main class="content" id="content"></main>
+
+<script>
+const SECTIONS = [
+  {
+    title: "Ansvarlige og myndiggjorte team",
+    g: ["#667eea","#764ba2"],
+    questions: [
+      "Teamet vårt måles på forretningsverdi og verdi for brukeren, ikke på konkrete funksjoner som leveres.",
+      "Vi jobber med å forstå og definere problemene vi skal løse, heller enn å bare å fokusere på funksjoner vi skal leverere.",
+      "Vi har autonomi til å bestemme hvordan vi skal løse et brukerproblem, basert på tydelige strategiske mål."
+    ]
+  },
+  {
+    title: "Kontinuerlig innsikt (Teresa Torres)",
+    g: ["#11998e","#38ef7d"],
+    questions: [
+      "Alle medlemmer av teamet vårt (Design, Produkt, Teknologi) er i kontakt med og forstår brukerne.",
+      "Vi balanserer kvalitativ innsikt (brukerintervjuer, brukertesting) med kvantitative data (analyse og målinger) når vi tar produktbeslutninger.",
+      "Vi kartlegger og prioriterer brukernes smertepunkter og behov, systematisk og kontinuerlig (parallelt med utvikling)."
+    ]
+  },
+  {
+    title: "Tverrfaglig",
+    g: ["#f7971e","#ffd200"],
+    questions: [
+      "Vi minimerer formelle overleveringer (handoffs), hvor designere og utviklere skaper løsninger sammen i stedet for å overlevere spesifikasjoner.",
+      "Utviklere og produktleder er aktivt involvert i tidlig brukerinnsikt og prototyping, ikke bare i selve gjennomføringen."
+    ]
+  },
+  {
+    title: "Eksperimentering og antagelser",
+    g: ["#f953c6","#b91d73"],
+    questions: [
+      "Vi finner, diskuterer og tester antakelsene våre (brukervennlighet, verdi, gjennomførbarhet) før vi bygger produksjonsklar programvare.",
+      "Vi kjører raske eksperimenter med lav kostnad eller prototypetester for å verifisere løsninger, heller enn å lene oss på meninger eller diskusjoner."
+    ]
+  },
+  {
+    title: "Kontinuerlige leveranser og måling av verdi",
+    g: ["#4facfe","#00c6fb"],
+    questions: [
+      "Vi produksjonssetter endringer hyppig fremfor store, sjeldne lanseringer.",
+      "Hver utrulling har som mål å levere økt verdi til sluttbrukeren eller teste en spesifikk hypotese.",
+      "Vi ser på avkreftede ideer eller mislykkede eksperimenter som verdifull læring fremfor bortkastet arbeid."
+    ]
+  }
+];
+
+const TOTAL_Q = SECTIONS.reduce((s, sec) => s + sec.questions.length, 0);
+let answers = {};
+
+// ── Cookies ──────────────────────────
+function cook(name, val, days) {
+  try {
+    if (val === undefined) {
+      const m = document.cookie.match('(?:^|;)\\s*' + name + '=([^;]*)');
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    document.cookie = name + '=' + encodeURIComponent(val) +
+      '; expires=' + new Date(Date.now() + days * 864e5).toUTCString() + '; path=/';
+  } catch(e) {}
+}
+function saveAnswers() { cook('pm_ans', JSON.stringify(answers), 60); }
+function loadAnswers() {
+  const raw = cook('pm_ans');
+  if (raw) { try { answers = JSON.parse(raw); } catch(e) {} }
+}
+
+// ── Progress ──────────────────────────
+function updateProgress() {
+  const n = Object.keys(answers).length;
+  document.getElementById('progress-text').textContent = n + ' av ' + TOTAL_Q + ' besvart';
+}
+
+// ── Render interactive ────────────────
+function renderContent() {
+  const root = document.getElementById('content');
+  root.innerHTML = '';
+  let qGlobal = 0;
+  SECTIONS.forEach((sec, si) => {
+    const section = document.createElement('div');
+    section.className = 'section';
+
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.style.background = `linear-gradient(135deg,${sec.g[0]},${sec.g[1]})`;
+    header.innerHTML =
+      `<div class="section-eye">Del ${si + 1} av ${SECTIONS.length}</div>` +
+      `<div class="section-title">${sec.title}</div>`;
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    sec.questions.forEach((q, qi) => {
+      qGlobal++;
+      const item = document.createElement('div');
+      item.className = 'q-item';
+      item.innerHTML =
+        `<div class="q-eye">Spørsmål ${qGlobal}</div>` +
+        `<p class="q-statement">${q}</p>` +
+        `<div class="scale-labels"><span>Helt uenig</span><span>Helt enig</span></div>` +
+        `<div class="scale-boxes" id="b-${si}-${qi}"></div>`;
+      body.appendChild(item);
+    });
+
+    section.appendChild(header);
+    section.appendChild(body);
+    root.appendChild(section);
+  });
+
+  fillBoxes();
+}
+
+function fillBoxes() {
+  SECTIONS.forEach((sec, si) => {
+    sec.questions.forEach((q, qi) => {
+      const container = document.getElementById(`b-${si}-${qi}`);
+      if (!container) return;
+      container.innerHTML = '';
+      const key = `${si}-${qi}`;
+      const sel = answers[key];
+      for (let sc = 1; sc <= 7; sc++) {
+        const box = document.createElement('button');
+        box.className = 'sbox' + (sel === sc ? ' on' : '');
+        box.textContent = sc;
+        box.setAttribute('aria-label', `${sc} av 7`);
+        if (sel === sc) {
+          box.style.background = `linear-gradient(135deg,${sec.g[0]},${sec.g[1]})`;
+        }
+        box.onclick = () => {
+          const k = `${si}-${qi}`;
+          if (answers[k] === sc) delete answers[k];
+          else answers[k] = sc;
+          saveAnswers();
+          fillBoxes();
+          updateProgress();
+        };
+        container.appendChild(box);
+      }
+    });
+  });
+}
+
+// ── PDF (pure jsPDF vector draw — no canvas, no network) ──────────────────
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return [r,g,b];
+}
+
+// Blend two hex colours at t (0=c1, 1=c2) — approximates the gradient midpoint
+function blendHex(c1, c2, t) {
+  const a = hexToRgb(c1), b = hexToRgb(c2);
+  return a.map((v,i) => Math.round(v + (b[i]-v)*t));
+}
+
+function fillRect(doc, x, y, w, h, rgb) {
+  doc.setFillColor(rgb[0], rgb[1], rgb[2]);
+  doc.rect(x, y, w, h, 'F');
+}
+
+function strokeRect(doc, x, y, w, h, rgb, lw) {
+  doc.setDrawColor(rgb[0], rgb[1], rgb[2]);
+  doc.setLineWidth(lw);
+  doc.rect(x, y, w, h, 'S');
+}
+
+// Wrap text into lines that fit within maxWidth (in mm) at current font settings
+function wrapText(doc, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let cur = '';
+  for (const w of words) {
+    const test = cur ? cur + ' ' + w : w;
+    if (doc.getTextWidth(test) > maxWidth && cur) {
+      lines.push(cur);
+      cur = w;
+    } else {
+      cur = test;
+    }
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+function generatePdf() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+  const PW = 210;   // A4 width mm
+  const PH = 297;   // A4 height mm
+  const PAD = 14;   // side margin mm
+  const CW = PW - PAD*2; // content width
+  const BOX_GAP = 2.5;
+  const BOX_W = (CW - BOX_GAP*6) / 7;
+  const BOX_H = BOX_W;
+
+  let qGlobal = 0;
+
+  SECTIONS.forEach((sec, si) => {
+    if (si > 0) doc.addPage();
+
+    let y = 10;
+
+    // ── Gradient header (approx with mid-blend fill) ──
+    const hdrH = 26;
+    const midRgb = blendHex(sec.g[0], sec.g[1], 0.5);
+    fillRect(doc, PAD, y, CW, hdrH, midRgb);
+
+    // Eyebrow
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(255,255,255);
+    doc.setGState(doc.GState({ opacity: 0.72 }));
+    doc.text(`DEL ${si+1} AV ${SECTIONS.length}`, PAD+6, y+8);
+    doc.setGState(doc.GState({ opacity: 1 }));
+
+    // Title
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(16);
+    doc.setTextColor(255,255,255);
+    // wrap title if long
+    const titleLines = wrapText(doc, sec.title, CW - 12);
+    titleLines.forEach((line, li) => {
+      doc.text(line, PAD+6, y+15 + li*7);
+    });
+    y += hdrH + 6;
+
+    // ── Questions ──
+    sec.questions.forEach((q, qi) => {
+      qGlobal++;
+      const key = `${si}-${qi}`;
+      const sel = answers[key];
+
+      if (qi > 0) {
+        doc.setDrawColor(220,220,240);
+        doc.setLineWidth(0.3);
+        doc.line(PAD, y, PAD+CW, y);
+        y += 4;
+      }
+
+      // Question number label
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(7);
+      doc.setTextColor(101,101,160);
+      doc.text(`SPØRSMÅL ${qGlobal}`, PAD, y+3);
+      y += 9;
+
+      // Question text
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(13);
+      doc.setTextColor(22,22,42);
+      const qLines = wrapText(doc, q, CW);
+      qLines.forEach((line, li) => {
+        doc.text(line, PAD, y + li*6.5);
+      });
+      y += qLines.length * 6.5 + 7;
+
+      // Scale labels
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(7);
+      doc.setTextColor(101,101,160);
+      doc.text('HELT UENIG', PAD, y+3);
+      doc.text('HELT ENIG', PAD+CW, y+3, { align: 'right' });
+      y += 5;
+
+      // Scale boxes
+      for (let sc = 1; sc <= 7; sc++) {
+        const bx = PAD + (sc-1)*(BOX_W + BOX_GAP);
+        const isOn = sel === sc;
+        if (isOn) {
+          const fillRgb = blendHex(sec.g[0], sec.g[1], (sc-1)/6);
+          fillRect(doc, bx, y, BOX_W, BOX_H, fillRgb);
+          doc.setFont('helvetica','bold');
+          doc.setFontSize(12);
+          doc.setTextColor(255,255,255);
+        } else {
+          fillRect(doc, bx, y, BOX_W, BOX_H, [243,243,249]);
+          strokeRect(doc, bx, y, BOX_W, BOX_H, [220,220,240], 0.4);
+          doc.setFont('helvetica','bold');
+          doc.setFontSize(12);
+          doc.setTextColor(101,101,160);
+        }
+        doc.text(String(sc), bx + BOX_W/2, y + BOX_H/2 + 2, { align: 'center' });
+      }
+      y += BOX_H + 8;
+    });
+  });
+
+  doc.save('produktmodenhet.pdf');
+}
+
+document.getElementById('pdf-btn').addEventListener('click', () => {
+  const btn = document.getElementById('pdf-btn');
+  btn.disabled = true;
+  btn.textContent = 'Genererer…';
+  try { generatePdf(); } catch(e) { console.error(e); }
+  btn.disabled = false;
+  btn.textContent = '⬇ Last ned PDF';
+});
+
+// ── Reset ─────────────────────────────
+let resetPending = false;
+const resetBtn = document.getElementById('reset-btn');
+resetBtn.addEventListener('click', () => {
+  if (!resetPending) {
+    resetPending = true;
+    resetBtn.textContent = 'Sikker?';
+    resetBtn.style.borderColor = '#e05';
+    resetBtn.style.color = '#e05';
+    setTimeout(() => {
+      resetPending = false;
+      resetBtn.textContent = '↺ Nullstill';
+      resetBtn.style.borderColor = '';
+      resetBtn.style.color = '';
+    }, 2500);
+  } else {
+    resetPending = false;
+    resetBtn.textContent = '↺ Nullstill';
+    resetBtn.style.borderColor = '';
+    resetBtn.style.color = '';
+    answers = {};
+    saveAnswers();
+    fillBoxes();
+    updateProgress();
+  }
+});
+
+// ── Init ──────────────────────────────
+loadAnswers();
+renderContent();
+updateProgress();
+</script>
