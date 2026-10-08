@@ -4,6 +4,8 @@ Interaktivt workshopverktøy for å kartlegge teamets produktmodenhet på tvers 
 
 **URL (kun for NRK-ansatte):** https://produktmodenhet.nrk-stash.dev/
 
+**Utskriftsklar PDF:** [printable.pdf](https://github.com/kjartan-neon/produktmodenhet-workshop/raw/main/printable.pdf)
+
 ---
 
 ## Hva det er
