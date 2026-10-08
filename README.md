@@ -2,12 +2,6 @@
 
 Verktøy for å kartlegge teamets produktmodenhet på tvers av fem dimensjoner. Delvis basert på workshops jeg holdt i politiet med utgangspunkt i *Empowered* og *Transformed* (Marty Cagan) og *Continuous Discovery Habits* (Teresa Torres), og delvis oppdatert etter ICP-ENT- og ICP-CAT-sertifiseringene jeg gjennomførte våren 2026.
 
-### ICP-ENT — Enterprise Agile Coaching
-ICAgile-sertifisering som handler om å coache organisasjoner på systemnivå: hvordan strukturer, kultur og ledelse enten muliggjør eller hindrer smidighet. Sertifiseringen utfordrer antakelsen om at agile metoder alene er nok — det handler like mye om autonomi, tillit og målstyring. Dette gjenspeiles direkte i workshopens første dimensjon om myndiggjorte team og i spørsmålene om strategisk retning og beslutningsmyndighet.
-
-### ICP-CAT — Coaching Agile Transitions
-ICAgile-sertifisering med fokus på endringsledelse og hvordan man støtter team og organisasjoner gjennom faktiske overganger — ikke bare innføring av rammeverk, men varig atferdsendring. Koblingen til workshopen er tydelig i dimensjonene om tverrfaglighet og kontinuerlig innsikt: begge krever at folk endrer hvordan de samarbeider og tar beslutninger, ikke bare hvilke verktøy de bruker.
-
 Tar gjerne imot innspill på alt som kan forbedres — spørsmålsformuleringer, dimensjoner, flyt eller annet.
 
 **URL (kun for NRK-ansatte):** https://produktmodenhet.nrk-stash.dev/
