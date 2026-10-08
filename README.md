@@ -1,6 +1,14 @@
 # Produktmodenhet Workshop
 
-Interaktivt workshopverktøy for å kartlegge teamets produktmodenhet på tvers av fem dimensjoner. Basert på Menti-undersøkelse, bygget om til fysisk/digital workshop der hver deltaker svarer individuelt og deretter sammenligner og diskuterer med teamet.
+Verktøy for å kartlegge teamets produktmodenhet på tvers av fem dimensjoner. Delvis basert på workshops jeg holdt i politiet med utgangspunkt i *Empowered* og *Transformed* (Marty Cagan) og *Continuous Discovery Habits* (Teresa Torres), og delvis oppdatert etter ICP-ENT- og ICP-CAT-sertifiseringene jeg gjennomførte våren 2026.
+
+### ICP-ENT — Enterprise Agile Coaching
+ICAgile-sertifisering som handler om å coache organisasjoner på systemnivå: hvordan strukturer, kultur og ledelse enten muliggjør eller hindrer smidighet. Sertifiseringen utfordrer antakelsen om at agile metoder alene er nok — det handler like mye om autonomi, tillit og målstyring. Dette gjenspeiles direkte i workshopens første dimensjon om myndiggjorte team og i spørsmålene om strategisk retning og beslutningsmyndighet.
+
+### ICP-CAT — Coaching Agile Transitions
+ICAgile-sertifisering med fokus på endringsledelse og hvordan man støtter team og organisasjoner gjennom faktiske overganger — ikke bare innføring av rammeverk, men varig atferdsendring. Koblingen til workshopen er tydelig i dimensjonene om tverrfaglighet og kontinuerlig innsikt: begge krever at folk endrer hvordan de samarbeider og tar beslutninger, ikke bare hvilke verktøy de bruker.
+
+Tar gjerne imot innspill på alt som kan forbedres — spørsmålsformuleringer, dimensjoner, flyt eller annet.
 
 **URL (kun for NRK-ansatte):** https://produktmodenhet.nrk-stash.dev/
 
@@ -8,9 +16,7 @@ Interaktivt workshopverktøy for å kartlegge teamets produktmodenhet på tvers 
 
 ---
 
-## Hva det er
-
-Workshopen dekker fem dimensjoner av produktmodenhet:
+## Fem dimensjoner
 
 1. **Ansvarlige og myndiggjorte team** – måles teamet på verdi, ikke leveranser?
 2. **Kontinuerlig innsikt (Teresa Torres)** – er hele teamet i kontakt med brukerne?
@@ -25,23 +31,23 @@ Hvert spørsmål besvares på en skala fra 1 (helt uenig) til 7 (helt enig).
 ## Slik bruker du det
 
 ### Individuell utfylling
-Hver deltaker åpner lenken på egen enhet (mobil, nettbrett eller PC) og fyller ut alle spørsmålene selv. Svarene lagres i nettleseren (cookie) og blir liggende til de nullstilles.
+Hver deltaker åpner lenken på egen enhet og fyller ut alle spørsmålene selv. Svarene lagres i nettleseren og blir liggende til de nullstilles.
 
 ### Sammenligning og diskusjon
-Når alle har svart, går gruppen gjennom én dimensjon om gangen og sammenligner svarene. Store sprik er ofte de mest interessante samtalestartere.
+Når alle har svart, går gruppen gjennom én dimensjon om gangen og sammenligner. Store sprik er ofte de beste samtalestartene.
 
 ### PDF-eksport
-Trykk **«⬇ Last ned PDF»** for å laste ned et sammendrag med dine svar. Én side per dimensjon, med fargekoding. Nyttig til å ta med inn i samtalen eller arkivere.
+Trykk **«⬇ Last ned PDF»** for å laste ned et sammendrag med dine svar — én side per dimensjon. Nyttig å ta med inn i samtalen eller arkivere etterpå.
 
 ### Nullstilling
-Trykk **«↺ Nullstill»** i toppen for å slette alle svar og starte på nytt. Krever et ekstra klikk som bekreftelse.
+Trykk **«↺ Nullstill»** for å slette alle svar og starte på nytt. Krever et ekstra klikk som bekreftelse.
 
 ---
 
 ## Teknisk
 
-- Én enkelt HTML-fil, ingen server eller backend
-- Svar lagres i en cookie (60 dager) i den enkeltes nettleser
-- PDF genereres lokalt i nettleseren med jsPDF – ingen data sendes ut
+- Én enkelt HTML-fil uten server eller backend
+- Svar lagres lokalt i en cookie (60 dager)
+- PDF genereres i nettleseren med jsPDF — ingen data sendes ut
 - Fungerer på mobil, nettbrett og desktop
-- Hostet på nrk-stash med SSO – kun tilgjengelig for NRK-ansatte
+- Hostet på nrk-stash med SSO — kun tilgjengelig for NRK-ansatte
